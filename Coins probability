@@ -1,0 +1,66 @@
+using System;
+using System.Linq;
+using System.Diagnostics;
+namespace Coins
+{
+    class Program
+    {
+        /// <summary>
+        /// Функция генерирует рандомным образом число в диапозоне [0,2]
+        /// </summary>
+        /// <returns>Рандомное натуральное число</returns>
+        static void RandomChoose(ref int val1, ref int val2)
+        {
+            Random random1 = new Random();
+            Random random2 = new Random();
+            val1 = random1.Next(0, 3);
+            val2 = random2.Next(0, 3);
+        }
+
+        /// <summary>
+        /// Функция анализирует выбор правильной монеты.
+        /// </summary>
+        /// <param name="coins"></param>
+        /// <param name="main_coin"></param>
+        /// <param name="first_choose"></param>
+        /// <returns>true - если монета мечена, иначе - false</returns>
+        static bool ThreeCoins(int main_coin, int first_choose)
+        {            
+            return true ? first_choose != main_coin : false;
+        }
+
+
+        static void Main(string[] args)
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            int main_coin = 0;
+            int first_choose = 0;
+            uint count = 0;
+            uint k = 1000;
+            uint n = 1000;
+            double[] p = new double[n];
+            for(int j = 0; j < n; j++)
+            {
+                for (int i = 0; i < k; i++)
+                {
+                    RandomChoose(ref main_coin, ref first_choose);
+                    if (ThreeCoins(main_coin, first_choose))
+                    {
+                        count++;
+                    }
+                }
+
+                p[j] = (double)count / k;
+                count = 0;
+            }
+            
+
+            double p_sred = p.Sum()/p.Length;
+            sw.Stop();
+            Console.WriteLine($"P = {p_sred*100:0.00}%");
+            Console.WriteLine("Time:" + sw.ElapsedMilliseconds.ToString());
+            
+        }
+    }
+}
